@@ -24,7 +24,7 @@ class Codebook(nn.Module):
         z_e = z_e.permute(0, 2, 3, 1).contiguous() 
         # Shape:  (batch_size, 8, 8, latent_dim)
 
-        print("z_e shape after permute:", z_e.shape)
+        #print("z_e shape after permute:", z_e.shape)
     
         # 2. reshape to (batch_size*8*8, latent_dim)
         flat_z_e = z_e.view(-1, self.latent_dim)
