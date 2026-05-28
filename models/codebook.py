@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from encoder import Encoder
+from models.encoder import Encoder
 
 class Codebook(nn.Module):
     def __init__(self, num_embeddings = 512, latent_dim = 256):  ## num_embeddings was 8192 for 256*256*3 images but we are using 32*32*3 images so we can reduce it to 512

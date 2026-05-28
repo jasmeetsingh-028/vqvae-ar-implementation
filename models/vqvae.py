@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from codebook import Codebook
-from encoder import Encoder
-from decoder import Decoder
+from models.codebook import Codebook
+from models.encoder import Encoder
+from models.decoder import Decoder
 
 class VQVAE(nn.Module):
     def __init__(self, in_channels = 3, hidden_dim = 128, latent_dim = 256, 

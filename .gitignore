@@ -224,3 +224,6 @@ venv/
 # dataset files
 
 data/files/
+
+# model checkpoints
+checkpoints/

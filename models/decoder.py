@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from encoder import Encoder
-from codebook import Codebook
+from models.encoder import Encoder
+from models.codebook import Codebook
 
 class Decoder(nn.Module):
     def __init__(self, latent_dim = 256, hidden_dim = 128, out_channels = 3):
