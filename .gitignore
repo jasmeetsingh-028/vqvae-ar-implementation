@@ -227,3 +227,10 @@ data/files/
 
 # model checkpoints
 checkpoints/
+
+
+# mlruns
+mlruns/
+
+# mlflow.db file
+mlflow.db

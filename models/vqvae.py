@@ -45,7 +45,7 @@ class VQVAE(nn.Module):
 
         total_loss = recon_loss + codebook_loss + self.beta * commitment_loss
 
-        return x_recon, total_loss, indices
+        return x_recon, total_loss, recon_loss, codebook_loss, commitment_loss, indices
 
 if __name__ == "__main__":
     x = torch.randn(1, 3, 32, 32)
