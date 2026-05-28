@@ -26,9 +26,19 @@ class VQVAE(nn.Module):
     def forward(self, x):
         z_e = self.encoder(x) # shape: (batch_size, 3, 32, 32) [Input image] -> (batch_size, 256, 8, 8) [encoder outputs]
 
-        z_q, indices = self.codebook(z_e) # shape: (batch_Size, 256, 8, 8) [encoder outputs] -> (batch_size, 256, 8, 8) [quantized codebook vectors], indices shape: (batch_size, 8, 8) {index for each codebook vector}
+        z_q_st, z_q, indices = self.codebook(z_e) # shape: (batch_Size, 256, 8, 8) [encoder outputs] -> (batch_size, 256, 8, 8) [quantized codebook vectors], indices shape: (batch_size, 8, 8) {index for each codebook vector}
 
-        x_recon = self.decoder(z_q) # shape: (batch_size, 256, 8, 8) [quantized latent vectors] -> (batch_size, 3, 32, 32) [reconstructed image]
+        # z_q_st is the straight-through version of z_q, which allows gradients to flow through z_e during backpropagation while using 
+        
+        # z_q is for the forward pass to the decoder. 
+        
+        # This is crucial for training the VQ-VAE effectively, as it ensures that the encoder learns to produce outputs that are close to the codebook embeddings, 
+        
+        # while still allowing the decoder to receive quantized vectors for reconstruction.
+
+        x_recon = self.decoder(z_q_st)  # decoder gets straight-through version
+        
+        # shape: (batch_size, 256, 8, 8) [quantized latent vectors] -> (batch_size, 3, 32, 32) [reconstructed image]
 
         # putting losses here to make it easier to compute the total loss in one step during training
 
@@ -50,10 +60,13 @@ class VQVAE(nn.Module):
 if __name__ == "__main__":
     x = torch.randn(1, 3, 32, 32)
     model = VQVAE()
-    x_recon, total_loss, indices = model(x)
+    x_recon, total_loss, recon_loss, codebook_loss, commitment_loss, indices = model(x)
 
     print("x_recon shape:", x_recon.shape)
     print("total_loss:", total_loss.item())
+    print("recon_loss:", recon_loss.item())
+    print("codebook_loss:", codebook_loss.item())
+    print("commitment_loss:", commitment_loss.item())
     print("indices shape:", indices.shape)
 
     print('-'*50)

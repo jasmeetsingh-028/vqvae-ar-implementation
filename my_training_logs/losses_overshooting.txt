@@ -32,3 +32,14 @@ Observations:
 No changes at all.
 recheck code.
 check beta.
+
+Issue: Issue while passing z_q and z_q_st {claude suggested}
+
+z_q_st is required for gradients to flow through while back prop so decoder gets z_q_st, as it lets gradients flow through it.
+
+z_q on the other hand is used for loss computation but does not allow gradients to flow through it.
+
+Significant improvements:
+
+Epoch [10/10], Loss: 0.2227
+Epoch 10 | train loss: 0.2227 | val loss: 0.2199 | recon: 0.0397 | codebook: 0.1464 | commit: 0.1464

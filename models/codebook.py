@@ -67,7 +67,7 @@ class Codebook(nn.Module):
 
 
         #shape of indices is (batch_size*8*8) but we want to return it as (batch_size, 8, 8) to match the spatial dimensions of the encoder output
-        return z_q_st, indices.view(-1, 8, 8)  # return the quantized vectors and the indices of the codebook embeddings used for quantization
+        return z_q_st, z_q, indices.view(-1, 8, 8)  # return the quantized vectors and the indices of the codebook embeddings used for quantization
 
 if __name__ == "__main__":
     encoder = Encoder()
@@ -77,7 +77,8 @@ if __name__ == "__main__":
     z_e = encoder(x)
     print(z_e.shape)
 
-    z_q, indices = codebook(z_e)
+    z_q_st, z_q, indices = codebook(z_e)
+    print(z_q_st.shape) # should be same as z_e shape: (batch_size, latent_dim, 8, 8)
     print(z_q.shape) # should be same as z_e shape: (batch_size, latent_dim, 8, 8)
     print(indices.shape) # should be (batch_size, 8, 8) gives the codebook indices for each spatial location in the encoder output
     print(indices.min(), indices.max()) # should be between 0 and num_embeddings-1 (0 to 511) since we have 512 codebook embeddings
