@@ -1,3 +1,4 @@
+
 import torch
 import torch.nn as nn
 import mlflow
@@ -5,8 +6,9 @@ import mlflow.pytorch
 from tqdm import tqdm 
 from data.dataset import get_cifar_10_dataset
 from models.vqvae import VQVAE
+from datetime import datetime
 
-def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = "cuda" if torch.cuda.is_available() else "cpu"):
+def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda" if torch.cuda.is_available() else "cpu"):
     train_loader, test_loader = get_cifar_10_dataset(batch_size=batch_size)
 
     model = VQVAE().to(device)
@@ -26,7 +28,8 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = "cuda
             "latent_dim":    256,
             "hidden_dim":    128,
             "beta":          0.25,
-            "device":        device
+            "device":        device,
+            "run_time":      datetime.now().isoformat()
         })
 
 
@@ -42,6 +45,8 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = "cuda
             optimizer.zero_grad()
             x_recon, total_loss, recon_loss, codebook_loss, commitment_loss,  _ = model(images)
             total_loss.backward()
+            ## gradient clipping to prevent exploding gradients, common in VQ-VAE training
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)  
             optimizer.step()
 
             train_recon    += recon_loss.item()
