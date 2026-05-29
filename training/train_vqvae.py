@@ -4,6 +4,7 @@ import torch.nn as nn
 import mlflow
 import mlflow.pytorch
 from tqdm import tqdm 
+import torchvision
 from data.dataset import get_cifar_10_dataset
 from models.vqvae import VQVAE
 from datetime import datetime
@@ -93,6 +94,33 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
                   f"recon: {train_recon/n_train:.4f} | "
                   f"codebook: {train_codebook/n_train:.4f} | "
                   f"commit: {train_commit/n_train:.4f}")
+        
+
+        if epoch % 10 == 0:
+            model.eval()
+
+            with torch.no_grad():
+                x_recon_viz, _, _, _, _, _= model(images[:8])  # only 8 images needed
+
+            model.train()
+
+            orig  = images[:8].cpu()          # (8, 3, 32, 32)
+            recon = x_recon_viz.cpu()         # (8, 3, 32, 32)
+
+            #print(f'shape of original images: {orig.shape}, shape of recon images: {recon.shape}')
+            
+            recon_images = torch.cat([images[:8], x_recon_viz], dim=0) # concatenate original and reconstructed images for visualization
+            recon_grid   = torchvision.utils.make_grid(recon_images.cpu(), nrow=8, normalize=True) # make a grid of 16 images (8 original + 8 reconstructions) for visualization, normalize to [0, 1] for saving
+            torchvision.utils.save_image(recon_grid, f"recon_epoch_{epoch+1}.png")
+            mlflow.log_artifact(f"recon_epoch_{epoch+1}.png")
+            #print(f"Saved recon_epoch_{epoch+1}.png")
+
+            torchvision.utils.save_image(recon_grid, f"outputs/vqvae_recons/recon_epoch_{epoch+1}.png")
+            mlflow.log_artifact(f"outputs/vqvae_recons/recon_epoch_{epoch+1}.png")
+        
+
+    
+
         
     # save weights after training
     torch.save(model.state_dict(), 'checkpoints/vqvae.pth')
