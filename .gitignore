@@ -239,3 +239,6 @@ training_plan.txt
 
 # data in notebooks folder
 notebooks and experiments/data/
+
+# tokenized dataset
+tokenized_cifar10/
