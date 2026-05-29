@@ -12,5 +12,5 @@ input_seq, target_seq = next(iter(loader))
 
 print(input_seq.shape)   # (64, 65)
 print(target_seq.shape)  # (64, 64)
-print(input_seq[0])      # first sequence — should start with 512 (BOS)
-print(target_seq[0])     # first target — should start with a codebook index 0-511
+print(input_seq[0])      # Input sequence starts with 512 (BOS)
+print(target_seq[0])     
