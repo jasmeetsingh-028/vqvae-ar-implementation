@@ -23,7 +23,16 @@ class TransformerDecoderBlock(nn.Module):
 
         x = x + self.attention(x) # shape (batch_size, seq_length = 65, d_model = 256)
 
-        x = x + self.mlp(x)  # shape (batch_size, seq_length = 65, d_model = 256)
+        x = x + self.feed_forward(x)  # shape (batch_size, seq_length = 65, d_model = 256)
 
         return x
+
+
+
+if __name__ == "__main__":
+    block = TransformerDecoderBlock(d_model=256, n_heads=8, d_feed_forward=1024, seq_length=65)
+    x     = torch.randn(4, 65, 256)
+    out   = block(x)
+    print(out.shape)
+
 
