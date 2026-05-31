@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from models.causal_self_attention import CausalSelfAttention
+from causal_self_attention import CausalSelfAttention
 
 class TransformerDecoderBlock(nn.Module):
     def __init__(self, d_model = 256, n_heads = 8, d_feed_forward = 1024, dropout = 0.1, seq_length = 65):
