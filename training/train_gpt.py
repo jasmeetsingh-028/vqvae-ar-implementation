@@ -79,7 +79,7 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = 'cuda
                 torch.save(model.state_dict(), f"checkpoints/gpt_epoch_{epoch+1}.pth")
                 mlflow.log_artifact(f"checkpoints/gpt_epoch_{epoch+1}.pth")
 
-            # save final model
-            torch.save(model.state_dict(), "checkpoints/gpt_final.pth")
-            mlflow.log_artifact("checkpoints/gpt_final.pth")
-            print("saved gpt_final.pth")
+    # save final model
+    torch.save(model.state_dict(), "checkpoints/gpt_final.pth")
+    mlflow.log_artifact("checkpoints/gpt_final.pth")
+    print("saved gpt_final.pth")
