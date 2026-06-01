@@ -44,17 +44,18 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = 'cuda
 
                 optimizer.zero_grad()
 
-                logits = model(input_seq)   # output logits across the entire vocabulary,  shape: (batch_Size = 64, seq_length = 65, vocab = 513)
+                logits = model(input_seq)   # output logits across the entire vocabulary for each of the input vectors,  shape: (batch_Size = 64, seq_length = 65, vocab = 513)
+
+                # get logits overt the entire vocabulary for all the tokens in the input sequence
 
                 # targets: shifted intput sequence (one correct token per index) 
                 # logits : prob scores across all the 513 token in vocabs 
-
-                ## IMP: “COMPARE: Out of all 513 scores, how good is the score for the correct token?”
                 
                 logits = logits[:, :-1, :]   # (B, 64, 513) — drop last position
 
-
-                ## why dropping last postion? why comparing logits and targets
+                # 1. softmax(scores): converts to probabilities (sum to 1)
+                # 2. pick prob[target]: what probability did model give the correct token?
+                # 3. loss = -log(that prob): penalize if probability was low
 
                 loss = F.cross_entropy(
                         logits.reshape(-1, 513),          # (B*64, 513)   

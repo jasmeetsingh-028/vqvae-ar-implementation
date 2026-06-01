@@ -1,0 +1,16 @@
+Only 10% code book utilization:
+
+torch.Size([81920])
+codebook utilization: 53/512 entries used (10.4%)
+
+Claude's suggestion: 
+
+Codebook initialized too small range:
+
+init.uniform_(self.codebook.weight, -1/num_embeddings, 1/num_embeddings)
+# -1/512 to 1/512 = -0.00195 to 0.00195 — extremely small
+
+Encoder outputs are much larger in magnitude — most codebook entries are never the nearest neighbor because they're all clustered near zero while encoder outputs are spread out.
+Fix — initialize with larger range:
+
+init.uniform_(self.codebook.weight, -1, 1)
