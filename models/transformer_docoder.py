@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from causal_self_attention import CausalSelfAttention
+from models.causal_self_attention import CausalSelfAttention
 
 class TransformerDecoderBlock(nn.Module):
     def __init__(self, d_model = 256, n_heads = 8, d_feed_forward = 1024, dropout = 0.1, seq_length = 65):
@@ -21,9 +21,9 @@ class TransformerDecoderBlock(nn.Module):
     
     def forward(self, x):
 
-        x = x + self.attention(x) # shape (batch_size, seq_length = 65, d_model = 256)
+        x = x + self.attention(self.layer_norm1(x)) # shape (batch_size, seq_length = 65, d_model = 256)
 
-        x = x + self.feed_forward(x)  # shape (batch_size, seq_length = 65, d_model = 256)
+        x = x + self.feed_forward(self.layer_norm2(x))  # shape (batch_size, seq_length = 65, d_model = 256)
 
         return x
 

@@ -58,7 +58,7 @@ class CausalSelfAttention(nn.Module):
 
         # masking future tokens
     
-        scores = scores.masked_fill(self.mask[:, :, :T, :T] == 0, float('inf')) 
+        scores = scores.masked_fill(self.mask[:, :, :T, :T] == 0, float('-inf')) 
 
         # softmax + dropout
         attn_scores = torch.softmax(scores, dim = -1)
@@ -69,9 +69,9 @@ class CausalSelfAttention(nn.Module):
 
         # attn_score shape (batch_size, n_heads, T, T) , Vshape: ((batch_size, n_heads = 8, seq_length = T, single_head_dim = 32)
 
+        # out shape: (batch_size, n_heads = 8, seq_len = T, single_head_dim = 32)
         # (T, T) @ (T, 32) = (T, 32)
 
-        # out shape: (batch_size, n_heads = 8, seq_len = T, single_head_dim = 32)
 
         # concat attention across all heads
 
