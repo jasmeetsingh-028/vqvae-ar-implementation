@@ -34,7 +34,7 @@ Original images (top row) vs reconstructed images (bottom row) at epoch 41:
 
 Each CIFAR-10 image compressed to an 8×8 grid of codebook indices. These integer grids are what the transformer trains on:
 
-![Image to Token Grid](results_and_plots/img-to-tokens.png)
+![Image to Token Grid](results and plot/img-to-tokens.png)
 
 ---
 
@@ -163,34 +163,7 @@ mlflow ui      # open http://localhost:5000
 
 ## Experiments & Observations
 
-### Experiment 1 — Codebook Collapse
-**Problem:** Initial codebook utilization was only **10.4%** (53/512 entries active).
-
-**Root cause:** Codebook initialized with range `(-1/512, 1/512)` — too small. Encoder outputs were much larger in magnitude so most entries were never the nearest neighbor.
-
-**Fix:** Changed initialization to `uniform(-1, 1)`.
-
-**Lesson:** Codebook initialization range must be compatible with the scale of encoder outputs.
-
----
-
-### Experiment 2 — Exploding Losses
-**Problem:** Training losses in the range of `1e14` after 10 epochs.
-
-**Root cause:** `z_q_st` (straight-through vector) was being returned instead of pure `z_q` from the codebook. The losses were being computed as:
-```python
-# wrong
-codebook_loss   = MSE(z_e.detach(), z_q_st)   # z_q_st has z_e mixed in
-commitment_loss = MSE(z_e, z_q_st.detach())
-```
-
-**Fix:** Return both `z_q_st` (for decoder) and `z_q` (for losses) separately from codebook forward.
-
-**Lesson:** `z_q_st` is only for the decoder. Losses must use pure `z_q` and `z_e`.
-
----
-
-### Experiment 3 — Transformer Loss Progression
+Transformer Loss Progression
 
 | Epoch | Train Loss |
 |-------|-----------|
