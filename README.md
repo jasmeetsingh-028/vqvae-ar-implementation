@@ -22,8 +22,15 @@ CIFAR-10 image (32, 32, 3)
 
 ## Results
 
+### Generated Samples
 
-### Image → Token Grid
+Images geneted by sampling from the trained transformer and decoding through VQ-VAE decoder.
+
+![Generated Samples](/outputs/generated_images/generated.png)
+
+---
+
+### Image to Token Grid
 
 Each CIFAR-10 image compressed to an 8×8 grid of codebook indices. These integer grids are what the transformer trains on:
 
@@ -36,6 +43,8 @@ Each CIFAR-10 image compressed to an 8×8 grid of codebook indices. These intege
 Original images (top row) vs reconstructed images (bottom row) at epoch 41:
 
 ![VQ-VAE Reconstructions](outputs/vqvae_recons/recon_epoch_41.png)
+
+
 
 
 
