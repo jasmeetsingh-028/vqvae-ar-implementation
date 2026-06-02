@@ -34,7 +34,7 @@ Original images (top row) vs reconstructed images (bottom row) at epoch 41:
 
 Each CIFAR-10 image compressed to an 8×8 grid of codebook indices. These integer grids are what the transformer trains on:
 
-![Image to Token Grid](results and plot/img-to-tokens.png)
+![Image to Token Grid](/results_and_plots/img_2_tokens.png)
 
 ---
 
