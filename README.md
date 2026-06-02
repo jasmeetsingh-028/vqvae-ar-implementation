@@ -22,19 +22,22 @@ CIFAR-10 image (32, 32, 3)
 
 ## Results
 
-### VQ-VAE Reconstruction
-
-Original images (top row) vs reconstructed images (bottom row) at epoch 41:
-
-![VQ-VAE Reconstructions](outputs/vqvae_recons/recon_epoch_41.png)
-
----
 
 ### Image → Token Grid
 
 Each CIFAR-10 image compressed to an 8×8 grid of codebook indices. These integer grids are what the transformer trains on:
 
 ![Image to Token Grid](/results_and_plots/img_2_tokens.png)
+
+---
+
+### VQ-VAE Reconstruction
+
+Original images (top row) vs reconstructed images (bottom row) at epoch 41:
+
+![VQ-VAE Reconstructions](outputs/vqvae_recons/recon_epoch_41.png)
+
+
 
 ---
 
