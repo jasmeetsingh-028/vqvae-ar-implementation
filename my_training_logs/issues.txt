@@ -14,3 +14,7 @@ Encoder outputs are much larger in magnitude — most codebook entries are never
 Fix — initialize with larger range:
 
 init.uniform_(self.codebook.weight, -1, 1)
+
+
+
+My solution: reduce codebook size to 128
