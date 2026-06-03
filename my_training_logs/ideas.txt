@@ -1,0 +1,3 @@
+ideas:
+
+plotting quantized vectors/tokens for different classes of cifar 10 to understand distribution of tokens/vectors over different classes.
