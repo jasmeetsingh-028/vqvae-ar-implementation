@@ -125,5 +125,5 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
         
     # save weights after training
     torch.save(model.state_dict(), 'checkpoints/vqvae_new.pth')
-    mlflow.log_artifact('checkpoints/vqvae.pth')
-    print("saved vqvae.pth")
+    mlflow.log_artifact('checkpoints/vqvae_new.pth')
+    print("saved vqvae_new.pth")
