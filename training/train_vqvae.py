@@ -25,6 +25,7 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
             "num_epochs":    num_epochs,
             "batch_size":    batch_size,
             "lr":            learning_rate,
+            "epochs":        num_epochs,
             "num_embeddings": 512,
             "latent_dim":    256,
             "hidden_dim":    128,
@@ -123,6 +124,6 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
 
         
     # save weights after training
-    torch.save(model.state_dict(), 'checkpoints/vqvae.pth')
+    torch.save(model.state_dict(), 'checkpoints/vqvae_new.pth')
     mlflow.log_artifact('checkpoints/vqvae.pth')
     print("saved vqvae.pth")

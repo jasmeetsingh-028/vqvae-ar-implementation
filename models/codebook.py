@@ -1,3 +1,5 @@
+from mimetypes import init
+
 import torch
 import torch.nn as nn
 from models.encoder import Encoder
@@ -13,7 +15,12 @@ class Codebook(nn.Module):
         self.codebook = nn.Embedding(num_embeddings, latent_dim)
 
         # initialize the codebook embeddings uniformly in the range -1/num_embeddings to 1/num_embeddings
-        nn.init.uniform_(self.codebook.weight, -1/num_embeddings, 1/num_embeddings)
+        # nn.init.uniform_(self.codebook.weight, -1/num_embeddings, 1/num_embeddings)
+
+        # initialization was found to have too small range which led to less code book usage.
+        # initialize with larger range:
+
+        nn.init.uniform_(self.codebook.weight, -1, 1)
 
 
     def forward(self, z_e):
