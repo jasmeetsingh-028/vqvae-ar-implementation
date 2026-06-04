@@ -6,6 +6,7 @@ from torch.optim import Adam
 from tqdm import tqdm
 from models.GPT import GPT
 from data.token_dataloader import get_token_dataloader
+from datetime import datetime
 
 
 def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = 'cuda' if torch.cuda.is_available() else 'cpu'):
@@ -27,6 +28,7 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 2e-4, device = 'cuda
     "d_ff": 1024,
     "seq_len": 65,
     "vocab_size": 513,
+    "run_time":   datetime.now().isoformat()
     }
 
     with mlflow.start_run():
