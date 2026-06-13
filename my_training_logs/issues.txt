@@ -15,6 +15,7 @@ Fix — initialize with larger range:
 
 init.uniform_(self.codebook.weight, -1, 1)
 
-
-
 My solution: reduce codebook size to 128
+
+post training results: issue contuinues to persist.
+
