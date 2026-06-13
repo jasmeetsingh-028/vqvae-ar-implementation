@@ -187,6 +187,13 @@ Transformer Loss Progression
 | 50 | ~2.27 |
 
 
+Model Complexity (GFLOPs) and parameters:
+
+| Model | GFLOPs | Parameters |
+|-------|--------|------------|
+| GPT | 0.32 | 4.86M |
+
+
 ---
 
 ## References
