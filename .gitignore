@@ -242,3 +242,9 @@ notebooks and experiments/data/
 
 # tokenized dataset
 tokenized_cifar10/
+
+# tuning db
+optuna_db/
+
+# db.sqlit3
+db.sqlite3
