@@ -18,7 +18,7 @@ def objective(trial, device):
     # learning rate and beta for loss weighting
     hidden_dim = trial.suggest_categorical("hidden_dim", [64, 128, 256])
     latent_dim = trial.suggest_categorical("latent_dim", [128, 256, 512])
-    beta = trial.suggest_float("beta", 0.1, 1.0, step = 0.25)
+    beta = beta = trial.suggest_float("beta", 0.0, 1.0, step=0.25)
     learning_rate = trial.suggest_float("learning_rate", 1e-4, 1e-3, log=True)
     num_embeddings = trial.suggest_categorical("num_embeddings", [64, 128, 256, 512])
 
