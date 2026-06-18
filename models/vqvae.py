@@ -6,7 +6,7 @@ from models.decoder import Decoder
 
 class VQVAE(nn.Module):
     def __init__(self, in_channels = 3, hidden_dim = 128, latent_dim = 256, 
-                 num_embeddings = 512, beta = 0.25):
+                 num_embeddings = 512, beta = 0.25, init_range = 1.0):
         
         super().__init__()
 
@@ -17,7 +17,8 @@ class VQVAE(nn.Module):
                                latent_dim=latent_dim)
         
         self.codebook = Codebook(num_embeddings=num_embeddings,
-                                 latent_dim=latent_dim)
+                                 latent_dim=latent_dim,
+                                 init_range=init_range)
         
         self.decoder = Decoder(latent_dim=latent_dim,
                                hidden_dim=hidden_dim,

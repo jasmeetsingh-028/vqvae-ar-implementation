@@ -5,7 +5,7 @@ import torch.nn as nn
 from models.encoder import Encoder
 
 class Codebook(nn.Module):
-    def __init__(self, num_embeddings = 512, latent_dim = 256):  ## num_embeddings was 8192 for 256*256*3 images but we are using 32*32*3 images so we can reduce it to 512
+    def __init__(self, num_embeddings = 512, latent_dim = 256, init_range = 1.0):  ## num_embeddings was 8192 for 256*256*3 images but we are using 32*32*3 images so we can reduce it to 512
         super().__init__()
 
         self.num_embeddings = num_embeddings
@@ -20,7 +20,7 @@ class Codebook(nn.Module):
         # initialization was found to have too small range which led to less code book usage.
         # initialize with larger range:
 
-        nn.init.uniform_(self.codebook.weight, -1, 1)
+        nn.init.uniform_(self.codebook.weight, -init_range, init_range)
 
 
     def forward(self, z_e):
