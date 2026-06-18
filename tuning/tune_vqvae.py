@@ -37,7 +37,7 @@ def objective(trial, device):
 
     best_val_loss = float("inf")
 
-    for epoch in range(10):
+    for epoch in range(25):
 
         vqvae.train()
         #total_loss = 0.0

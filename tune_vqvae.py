@@ -5,7 +5,7 @@ from tuning.tune_vqvae import objective
 import optuna.visualization as vis
 
 
-n_trials = 50
+n_trials = 25
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
@@ -15,7 +15,11 @@ study = optuna.create_study(
     direction = 'minimize',
     storage= storage,
     study_name=f'vqvae_tuning_{n_trials}_trials',
-    pruner=optuna.pruners.MedianPruner(n_warmup_steps=3) # to kill bad trials early if avg_val_loss is worse than the median
+    #pruner=optuna.pruners.MedianPruner(n_warmup_steps=3) # to kill bad trials early if avg_val_loss is worse than the median
+    pruner=optuna.pruners.MedianPruner(
+        n_startup_trials=7,    # don't prune first 7 trials
+        n_warmup_steps=5       # don't prune before epoch 5
+    )
 )
 
 study.optimize(

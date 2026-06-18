@@ -9,14 +9,35 @@ from data.dataset import get_cifar_10_dataset
 from models.vqvae import VQVAE
 from datetime import datetime
 
-def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda" if torch.cuda.is_available() else "cpu"):
+
+## 1st exp: 50 trials
+# 
+# hidden_dim 128
+
+# latent_dim 512
+
+# learning_rate 0.000991274014431712
+
+# num_embeddings 128
+
+# init_range 0.1
+
+
+
+def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-3, device = "cuda" if torch.cuda.is_available() else "cpu"):
     train_loader, test_loader = get_cifar_10_dataset(batch_size=batch_size)
 
-    model = VQVAE().to(device)
+    model = VQVAE(in_channels=3,
+                  hidden_dim=128,
+                  latent_dim=512,
+                  num_embeddings=128,
+                  beta = 0.25,
+                  init_range=0.1).to(device)
+    
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
     # start mlflow run
-    mlflow.set_experiment("vqvae_cifar10")
+    mlflow.set_experiment("vqvae_cifar10_trial_50")
 
     with mlflow.start_run():
 
@@ -26,10 +47,11 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
             "batch_size":    batch_size,
             "lr":            learning_rate,
             "epochs":        num_epochs,
-            "num_embeddings": 512,
-            "latent_dim":    256,
+            "num_embeddings": 128,
+            "latent_dim":    512,
             "hidden_dim":    128,
             "beta":          0.25,
+            "init":          0.1,
             "device":        device,
             "run_time":      datetime.now().isoformat()
         })
@@ -116,14 +138,14 @@ def train(num_epochs = 10, batch_size = 64, learning_rate = 1e-4, device = "cuda
             mlflow.log_artifact(f"recon_epoch_{epoch+1}.png")
             #print(f"Saved recon_epoch_{epoch+1}.png")
 
-            torchvision.utils.save_image(recon_grid, f"outputs/vqvae_recons/recon_epoch_{epoch+1}.png")
-            mlflow.log_artifact(f"outputs/vqvae_recons/recon_epoch_{epoch+1}.png")
+            torchvision.utils.save_image(recon_grid, f"outputs/vqvae_recons/recon_epoch_{epoch+1}_trial_50.png")
+            #mlflow.log_artifact(f"outputs/vqvae_recons/recon_epoch_{epoch+1}.png")
         
 
     
 
         
     # save weights after training
-    torch.save(model.state_dict(), 'checkpoints/vqvae_new.pth')
-    mlflow.log_artifact('checkpoints/vqvae_new.pth')
+    torch.save(model.state_dict(), 'checkpoints/vqvae_trial_50.pth')
+    mlflow.log_artifact('checkpoints/vqvae_trial_50.pth')
     print("saved vqvae_new.pth")
